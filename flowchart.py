@@ -236,12 +236,27 @@ class Parallelogram:
         canvas.itemconfig(self.dot3, state="normal")
         canvas.itemconfig(self.dot4, state="normal")
 
+    def resize(self, event):
+        pointer_x = event.x
+        pointer_y = event.y
+        print("Pointer:", pointer_x, pointer_y)
+
+        # Here you would compute the new size based on the pointer position
+        # relative to the original dot position. Hopefully there is some easy
+        # way to do that using the canvas. If not I would probably try and save
+        # some values in each shape class you have to make it easier.
+
+        # Once you know how much to scale the shape you can use canvas.scale
+        # to change the size. I wasn't too sure on the args you would want to
+        # use here so you might play with that a bit since you are more familiar.
+        # canvas.scale(self.parallelogram, 0, 0, r, r)
+
     def drag(self, event):
         #coordinates of the place we are dragging the widget to (Point B)
         pointer_x=event.x
         pointer_y=event.y
         print("Pointer:",pointer_x,pointer_y)
-        
+
         #distance between Point A and Point B for x and y
         x = pointer_x - self.click_x
         print("X: {}-{} = {}".format(pointer_x,self.click_x,x))
@@ -258,11 +273,13 @@ class Parallelogram:
         self.click_y = pointer_y
     
     def __init__(self, color):
-        self.parallelogram = canvas.create_polygon((10+45, (RECTANGLE_SIZE[1]+20+CIRCLE_SIZE[1]+20+DIAMOND_SIZE[1]+20)),
-                                             (10, (RECTANGLE_SIZE[1]+20+CIRCLE_SIZE[1]+20+DIAMOND_SIZE[1]+20)+PARALLELOGRAM_SIZE[1]),
-                                             (10+PARALLELOGRAM_SIZE[0]-45, (RECTANGLE_SIZE[1]+20+CIRCLE_SIZE[1]+20+DIAMOND_SIZE[1]+20)+PARALLELOGRAM_SIZE[1]),
-                                             (10+PARALLELOGRAM_SIZE[0], (RECTANGLE_SIZE[1]+20+CIRCLE_SIZE[1]+20+DIAMOND_SIZE[1]+20)),
-                                             fill=color,width=4,outline="black")
+        self.parallelogram = canvas.create_polygon(
+            (10 + 45, (RECTANGLE_SIZE[1] + 20 + CIRCLE_SIZE[1] + 20 + DIAMOND_SIZE[1] + 20)),
+            (10, (RECTANGLE_SIZE[1] + 20 + CIRCLE_SIZE[1] + 20 + DIAMOND_SIZE[1] + 20) + PARALLELOGRAM_SIZE[1]),
+            (10 + PARALLELOGRAM_SIZE[0] - 45,
+             (RECTANGLE_SIZE[1] + 20 + CIRCLE_SIZE[1] + 20 + DIAMOND_SIZE[1] + 20) + PARALLELOGRAM_SIZE[1]),
+            (10 + PARALLELOGRAM_SIZE[0], (RECTANGLE_SIZE[1] + 20 + CIRCLE_SIZE[1] + 20 + DIAMOND_SIZE[1] + 20)),
+            fill=color, width=4, outline="black")
         self.coords = canvas.coords(self.parallelogram)
         
         self.dot1 = canvas.create_oval((self.coords[0]-DOT_SIZE,self.coords[1]-DOT_SIZE),
@@ -280,6 +297,13 @@ class Parallelogram:
         
         canvas.tag_bind(self.parallelogram,"<Button-1>",self.click)
         canvas.tag_bind(self.parallelogram,"<B1-Motion>",self.drag)
+
+        # Bind events to the dots... I used motion, but you might use something else.
+        # I assumed it would be similar to "drag" above
+        canvas.tag_bind(self.dot1, '<B1-Motion>', self.resize)
+        canvas.tag_bind(self.dot2, '<B1-Motion>', self.resize)
+        canvas.tag_bind(self.dot3, '<B1-Motion>', self.resize)
+        canvas.tag_bind(self.dot4, '<B1-Motion>', self.resize)
 
 class Arrow:
     def click(self, event):
