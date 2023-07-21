@@ -225,16 +225,26 @@ class Diamond:
         canvas.tag_bind(self.diamond,"<B1-Motion>",self.drag)
 
 class Parallelogram:
+    is_dots_visible = False
+
     def click(self, event):
         #coordinates of the place we click the label at (Point A)
         self.click_x = event.x
         self.click_y = event.y
         print("Click:",self.click_x,self.click_y)
-        
-        canvas.itemconfig(self.dot1, state="normal")
-        canvas.itemconfig(self.dot2, state="normal")
-        canvas.itemconfig(self.dot3, state="normal")
-        canvas.itemconfig(self.dot4, state="normal")
+
+        if self.is_dots_visible:
+            self.is_dots_visible = False
+            canvas.itemconfig(self.dot1, state="hidden")
+            canvas.itemconfig(self.dot2, state="hidden")
+            canvas.itemconfig(self.dot3, state="hidden")
+            canvas.itemconfig(self.dot4, state="hidden")
+        else:
+            self.is_dots_visible = True
+            canvas.itemconfig(self.dot1, state="normal")
+            canvas.itemconfig(self.dot2, state="normal")
+            canvas.itemconfig(self.dot3, state="normal")
+            canvas.itemconfig(self.dot4, state="normal")
 
     def resize(self, event):
         pointer_x = event.x
