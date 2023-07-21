@@ -9,7 +9,7 @@ python3 -m venv venv
 
 2. Activate your virtual environment
 ```zsh
-activate venv/bin/activate
+source venv/bin/activate
 ```
 
 3. Install deps
